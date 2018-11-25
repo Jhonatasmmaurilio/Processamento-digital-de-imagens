@@ -89,7 +89,6 @@ public class trabfinalController {
 		int[] instB = Pdi.histograma(img,3);
 		
 		img3 = Pdi.equalHist(instR, instG, instB, img);
-		atualizaImage3();
 	}
 	
 	@FXML
@@ -98,33 +97,22 @@ public class trabfinalController {
 		valor = valor / 255;
 		img1 = Pdi.escalaDeCinza(img1);
 		img3 = Pdi.limiarizacao(img1, valor);
-		atualizaImage3();
 	}
 	
 	@FXML
 	public void negativa() {
 		img3 = Pdi.negativa(img1);
-		atualizaImage3();
-	}
-	
-	private void exibeMsg (String titulo, String cabecalho, String msg, AlertType type) {
-		Alert alert = new Alert(type);
-		alert.setTitle(titulo);
-		alert.setHeaderText(cabecalho);
-		alert.setContentText(msg);
-		alert.showAndWait();
 	}
 	
 	@FXML
 	public void escalaDeCinzaMedia() {
 		img3 = Pdi.escalaDeCinza(img1);
-		atualizaImage3();
 	}
 
-	private void atualizaImage3() {
-		imageResult.setImage(img3);
-		imageResult.setFitWidth(img3.getWidth());
-		imageResult.setFitHeight(img3.getHeight());
+	private void atualizaImage3(Image img) {
+		imageResult.setImage(img);
+		imageResult.setFitWidth(img.getWidth());
+		imageResult.setFitHeight(img.getHeight());
 	}
 
 	@FXML
@@ -148,25 +136,27 @@ public class trabfinalController {
 		Image escalaCinza,negativa,limiarizacao,equalizacaoHistograma;
 		
 		escalaCinza = Pdi.escalaDeCinza(imagem);
-		negativa = Pdi.negativa(imagem);
-		limiarizacao = Pdi.limiarizacao(imagem, 128.0);
+		negativa = Pdi.negativa(escalaCinza);
+		limiarizacao = Pdi.limiarizacao(negativa, 128.0);
 		
-		int[] instR = Pdi.histograma(imagem,1);
-		int[] instG = Pdi.histograma(imagem,2);
-		int[] instB = Pdi.histograma(imagem,3);
+		int[] instR = Pdi.histograma(limiarizacao,1);
+		int[] instG = Pdi.histograma(limiarizacao,2);
+		int[] instB = Pdi.histograma(limiarizacao,3);
 		
-		equalizacaoHistograma = Pdi.equalHist(instR, instG, instB, imagem);
+		equalizacaoHistograma = Pdi.equalHist(instR, instG, instB, limiarizacao);
+		
+		feed1.setText("Imagem processada com sucesso");
 		
 		filtro1.setImage(escalaCinza);
 		filtro2.setImage(negativa);
 		filtro3.setImage(limiarizacao);
 		filtro4.setImage(equalizacaoHistograma);
 		
+		atualizaImage3(equalizacaoHistograma);
+		
 		lbFiltro1.setText("Escala de cinza");
 		lbFiltro2.setText("Negativa");
 		lbFiltro3.setText("Limiarização");
 		lbFiltro4.setText("Equalização");
-		
-		atualizaImage3();
 	}
 }
