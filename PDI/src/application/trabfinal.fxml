@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -42,7 +43,7 @@
             </HBox>
          </center>
          <top>
-            <VBox alignment="TOP_CENTER" prefHeight="103.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
+            <VBox prefHeight="103.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
                <children>
                   <Label text="Processamento digital de imagens para a detecção eclassificação de nódulos em mamografias" textAlignment="CENTER" textFill="WHITE">
                      <font>
@@ -114,6 +115,9 @@
                      </children>
                   </HBox>
                   <Button mnemonicParsing="false" onAction="#tratamento" prefWidth="200.0" text="Pré-processar" textAlignment="CENTER" />
+                  <Label text="Ajustar limiar" textFill="WHITE" />
+                  <Slider fx:id="valueLimiar" disable="true" max="255.0" showTickLabels="true" showTickMarks="true" />
+                  <Button fx:id="btlimiar" disable="true" mnemonicParsing="false" onAction="#limiar" prefHeight="25.0" prefWidth="162.0" text="Ajustar" />
                </children>
                <opaqueInsets>
                   <Insets />

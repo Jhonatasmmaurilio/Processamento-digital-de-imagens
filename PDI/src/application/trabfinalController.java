@@ -1,5 +1,7 @@
 package application;
 	
+import java.awt.Button;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -49,6 +51,10 @@ public class trabfinalController {
 	@FXML ImageView bancoimg4;
 	@FXML ImageView bancoimg5;
 	@FXML ImageView bancoimg6;
+	
+	@FXML Slider valueLimiar;
+	
+	@FXML javafx.scene.control.Button btlimiar;
 	
 	@FXML
 	public void testarImg1() {
@@ -123,13 +129,20 @@ public class trabfinalController {
 	}
 
 	@FXML
+	public void limiar() {
+		double limiar = valueLimiar.getValue() / 255;
+		Image img = Pdi.limiarizacao(imageResult.getImage(), limiar);
+		atualizaImage3(img);
+	}
+	
+	@FXML
 	public void tratamento() {
 		Image imagem = imageViewOrign.getImage();
 		Image escalaCinza,negativa,limiarizacao,equalizacaoHistograma;
 		
 		escalaCinza = Pdi.escalaDeCinza(imagem);
 		negativa = Pdi.negativa(escalaCinza);
-		limiarizacao = Pdi.limiarizacao(negativa, 0.1);
+		limiarizacao = Pdi.limiarizacao(negativa, 0.128);
 		
 		int[] instR = Pdi.histograma(limiarizacao,1);
 		int[] instG = Pdi.histograma(limiarizacao,2);
@@ -146,6 +159,9 @@ public class trabfinalController {
 		filtro4.setImage(equalizacaoHistograma);
 		
 		atualizaImage3(equalizacaoHistograma);
+		
+		valueLimiar.setDisable(false);
+		btlimiar.setDisable(false);
 		
 		lbFiltro1.setText("Escala de cinza");
 		lbFiltro2.setText("Negativa");
