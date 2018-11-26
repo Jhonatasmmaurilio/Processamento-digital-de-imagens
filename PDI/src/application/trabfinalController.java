@@ -110,9 +110,9 @@ public class trabfinalController {
 
 
 	@FXML
-	public void contraste(){
+	public Image contraste(){
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		Mat image = OpenCVUtils.imageToMat(img1);
+		Mat image = OpenCVUtils.imageToMat(imageViewOrign.getImage());
 		Mat newImage = Mat.zeros(image.size(), image.type());
 		double alpha = 1.0; /*< Simple contrast control */
 		int beta = 41;       /*< Simple brightness control */
@@ -131,7 +131,7 @@ public class trabfinalController {
 		}
 		newImage.put(0, 0, newImageData);
 		img3 = OpenCVUtils.matrixToImage(newImage);
-
+		return img3;
 
 	}
 	
@@ -181,6 +181,7 @@ public class trabfinalController {
 		filtro2.setImage(negativa);
 		filtro3.setImage(limiarizacao);
 		filtro4.setImage(equalizacaoHistograma);
+		filtro5.setImage(contraste());
 		
 		atualizaImage3(equalizacaoHistograma);
 		
