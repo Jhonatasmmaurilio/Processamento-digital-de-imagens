@@ -32,6 +32,7 @@ public class trabfinalController {
 	@FXML Label lbFiltro5;
 	@FXML Label lbFiltro6;
 	@FXML Label feed1;
+	@FXML Label feed2;
 	
 	//resultado filtros
 	@FXML ImageView filtro1;
@@ -80,7 +81,7 @@ public class trabfinalController {
 		feed1.setText("Clique em pré-processar");
 	}
 	
-	@FXML
+	
 	public void histogramaEqua() {
 		Image img = imageViewOrign.getImage();
 		
@@ -91,7 +92,6 @@ public class trabfinalController {
 		img3 = Pdi.equalHist(instR, instG, instB, img);
 	}
 	
-	@FXML
 	public void limiarizacao() {
 		double valor = slider.getValue();
 		valor = valor / 255;
@@ -99,33 +99,26 @@ public class trabfinalController {
 		img3 = Pdi.limiarizacao(img1, valor);
 	}
 	
-	@FXML
 	public void negativa() {
 		img3 = Pdi.negativa(img1);
 	}
-	
-	@FXML
+
 	public void escalaDeCinzaMedia() {
 		img3 = Pdi.escalaDeCinza(img1);
 	}
 
 	private void atualizaImage3(Image img) {
 		imageResult.setImage(img);
-		imageResult.setFitWidth(img.getWidth());
-		imageResult.setFitHeight(img.getHeight());
 	}
 
-	@FXML
 	public void canny(){
 		Pdi.canny();
 	}
 
-	@FXML
 	public void prewitt(){
 		Pdi.prewitt();
 	}
 
-	@FXML
 	public void sobel(){
 		Pdi.sobel();
 	}
@@ -137,7 +130,7 @@ public class trabfinalController {
 		
 		escalaCinza = Pdi.escalaDeCinza(imagem);
 		negativa = Pdi.negativa(escalaCinza);
-		limiarizacao = Pdi.limiarizacao(negativa, 128.0);
+		limiarizacao = Pdi.limiarizacao(negativa, 0.1);
 		
 		int[] instR = Pdi.histograma(limiarizacao,1);
 		int[] instG = Pdi.histograma(limiarizacao,2);
@@ -146,6 +139,7 @@ public class trabfinalController {
 		equalizacaoHistograma = Pdi.equalHist(instR, instG, instB, limiarizacao);
 		
 		feed1.setText("Imagem processada com sucesso");
+		feed2.setText("Resultado");
 		
 		filtro1.setImage(escalaCinza);
 		filtro2.setImage(negativa);
