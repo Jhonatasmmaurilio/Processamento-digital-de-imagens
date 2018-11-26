@@ -179,7 +179,7 @@ public class trabfinalController {
 		
 		escalaCinza = Pdi.escalaDeCinza(imagem);
 		negativa = Pdi.negativa(escalaCinza);
-		limiarizacao = Pdi.limiarizacao(negativa, 0.128);
+		limiarizacao = Pdi.limiarizacao(negativa, 128.0/255);
 		
 		int[] instR = Pdi.histograma(limiarizacao,1);
 		int[] instG = Pdi.histograma(limiarizacao,2);
