@@ -15,6 +15,9 @@ import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import utils.OpenCVUtils;
 import utils.Pdi;
 
 public class trabfinalController {
@@ -59,32 +62,32 @@ public class trabfinalController {
 	@FXML
 	public void testarImg1() {
 		imageViewOrign.setImage(bancoimg1.getImage());
-		feed1.setText("Clique em pré-processar");
+		feed1.setText("Clique em prï¿½-processar");
 	}
 	@FXML
 	public void testarImg2() {
 		imageViewOrign.setImage(bancoimg2.getImage());
-		feed1.setText("Clique em pré-processar");
+		feed1.setText("Clique em prï¿½-processar");
 	}
 	@FXML
 	public void testarImg3() {
 		imageViewOrign.setImage(bancoimg3.getImage());
-		feed1.setText("Clique em pré-processar");
+		feed1.setText("Clique em prï¿½-processar");
 	}
 	@FXML
 	public void testarImg4() {
 		imageViewOrign.setImage(bancoimg4.getImage());
-		feed1.setText("Clique em pré-processar");
+		feed1.setText("Clique em prï¿½-processar");
 	}
 	@FXML
 	public void testarImg5() {
 		imageViewOrign.setImage(bancoimg5.getImage());
-		feed1.setText("Clique em pré-processar");
+		feed1.setText("Clique em prï¿½-processar");
 	}
 	@FXML
 	public void testarImg6() {
 		imageViewOrign.setImage(bancoimg6.getImage());
-		feed1.setText("Clique em pré-processar");
+		feed1.setText("Clique em prï¿½-processar");
 	}
 	
 	public void histogramaEqua() {
@@ -102,6 +105,40 @@ public class trabfinalController {
 		valor = valor / 255;
 		img1 = Pdi.escalaDeCinza(img1);
 		img3 = Pdi.limiarizacao(img1, valor);
+	}
+
+	private byte saturate(double val) {
+		int iVal = (int) Math.round(val);
+		iVal = iVal > 255 ? 255 : (iVal < 0 ? 0 : iVal);
+		return (byte) iVal;
+	}
+
+
+
+	@FXML
+	public void contraste(){
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		Mat image = OpenCVUtils.imageToMat(img1);
+		Mat newImage = Mat.zeros(image.size(), image.type());
+		double alpha = 1.0; /*< Simple contrast control */
+		int beta = 41;       /*< Simple brightness control */
+		byte[] imageData = new byte[(int) (image.total()*image.channels())];
+		image.get(0, 0, imageData);
+		byte[] newImageData = new byte[(int) (newImage.total()*newImage.channels())];
+		for (int y = 0; y < image.rows(); y++) {
+			for (int x = 0; x < image.cols(); x++) {
+				for (int c = 0; c < image.channels(); c++) {
+					double pixelValue = imageData[(y * image.cols() + x) * image.channels() + c];
+					pixelValue = pixelValue < 0 ? pixelValue + 256 : pixelValue;
+					newImageData[(y * image.cols() + x) * image.channels() + c]
+							= saturate(alpha * pixelValue + beta);
+				}
+			}
+		}
+		newImage.put(0, 0, newImageData);
+		img3 = OpenCVUtils.matrixToImage(newImage);
+
+
 	}
 	
 	public void negativa() {
@@ -165,7 +202,7 @@ public class trabfinalController {
 		
 		lbFiltro1.setText("Escala de cinza");
 		lbFiltro2.setText("Negativa");
-		lbFiltro3.setText("Limiarização");
-		lbFiltro4.setText("Equalização");
+		lbFiltro3.setText("Limiarizaï¿½ï¿½o");
+		lbFiltro4.setText("Equalizaï¿½ï¿½o");
 	}
 }
