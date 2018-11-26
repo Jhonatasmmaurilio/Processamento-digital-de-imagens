@@ -84,7 +84,6 @@ public class trabfinalController {
 		feed1.setText("Clique em pr�-processar");
 	}
 	
-	
 	public void histogramaEqua() {
 		Image img = imageViewOrign.getImage();
 		
