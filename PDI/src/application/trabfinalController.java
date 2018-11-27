@@ -147,9 +147,9 @@ public class trabfinalController {
 		imageResult.setImage(img);
 	}
 
-	public void canny(){
-		Pdi.canny();
-	}
+//	public void canny(Image img){
+//		Pdi.canny(img);
+//	}
 
 	public void prewitt(){
 		Pdi.prewitt();
@@ -219,7 +219,7 @@ public class trabfinalController {
 		filtro2.setImage(negativa);
 		filtro3.setImage(limiarizacao);
 		filtro4.setImage(equalizacaoHistograma);
-		
+		filtro5.setImage(Pdi.canny(imageViewOrign.getImage()));
 		atualizaImage3(equalizacaoHistograma);
 		
 		lbFiltro1.setText("Escala de cinza");

@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
-import org.opencv.core.Point;
-import org.opencv.core.Size;
+import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
@@ -23,6 +19,10 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 public class Pdi {
+	private static final int RATIO = 3;
+	private static final int KERNEL_SIZE = 3;
+	private static final Size BLUR_SIZE = new Size(3, 3);
+
 	public static Image equalHist(int[] histR, int[] histG, int[] histB, Image img) {
 		int w = (int) img.getWidth();
 		int h = (int) img.getHeight();
@@ -547,24 +547,26 @@ public class Pdi {
 		}
 	}
 
-	public static void canny(){
-		
-		try {
-			carregaOpenCV();
-			
-			String inputFile = "D:\\documentos\\CCP\\Processamento-digital-imagens\\PDI\\src\\img\\estrela.jpg";
-			String outputFile = "D:\\documentos\\CCP\\Processamento-digital-imagens\\PDI\\src\\img\\canny.jpg";
-			
-			Mat matImgDst = new Mat();
-			Mat matImgSrc = Imgcodecs.imread(inputFile);
+	public static Image canny(Image img) {
+		img = limiarizacao(img, 128.0/255);
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		Mat src = OpenCVUtils.imageToMat(img);
+		Mat srcBlur = new Mat();
+		Mat detectedEdges = new Mat();
+		Mat dst = new Mat();
 
-			Imgproc.Canny(matImgSrc, matImgDst, 10, 100); 
-			Imgcodecs.imwrite(outputFile, matImgDst);
+		Imgproc.blur(src, srcBlur, BLUR_SIZE);
+		Imgproc.Canny(srcBlur, detectedEdges, 5, 5 * RATIO, KERNEL_SIZE, false);
+		dst = new Mat(src.size(), CvType.CV_8UC3, Scalar.all(0));
+		src.copyTo(dst, detectedEdges);
+		Image img_3 = OpenCVUtils.matrixToImage(dst);
+		return img_3;
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
+
+
 	}
+
 
 	public static void prewitt(){
 		
