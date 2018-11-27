@@ -4,7 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.opencv.core.*;
+import org.opencv.core.Core;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
@@ -561,10 +566,6 @@ public class Pdi {
 		src.copyTo(dst, detectedEdges);
 		Image img_3 = OpenCVUtils.matrixToImage(dst);
 		return img_3;
-
-
-
-
 	}
 
 
@@ -683,6 +684,37 @@ public class Pdi {
 		}
 
 		return wi;
+	}
+	
+	private static byte saturate(double val) {
+		int iVal = (int) Math.round(val);
+		iVal = iVal > 255 ? 255 : (iVal < 0 ? 0 : iVal);
+		return (byte) iVal;
+	}
+	
+	public static Image contraste(Image imagem){
+		Image img3;
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		Mat image = OpenCVUtils.imageToMat(imagem);
+		Mat newImage = Mat.zeros(image.size(), image.type());
+		double alpha = 0.8; /*< Simple contrast control */
+		int beta = 42;       /*< Simple brightness control */
+		byte[] imageData = new byte[(int) (image.total()*image.channels())];
+		image.get(0, 0, imageData);
+		byte[] newImageData = new byte[(int) (newImage.total()*newImage.channels())];
+		for (int y = 0; y < image.rows(); y++) {
+			for (int x = 0; x < image.cols(); x++) {
+				for (int c = 0; c < image.channels(); c++) {
+					double pixelValue = imageData[(y * image.cols() + x) * image.channels() + c];
+					pixelValue = pixelValue < 0 ? pixelValue + 256 : pixelValue;
+					newImageData[(y * image.cols() + x) * image.channels() + c]
+							= saturate(alpha * pixelValue + beta);
+				}
+			}
+		}
+		newImage.put(0, 0, newImageData);
+		img3 = OpenCVUtils.matrixToImage(newImage);
+		return img3;
 	}
 	
 }

@@ -18,9 +18,6 @@ import utils.Pdi;
 public class trabfinalController {
 	@FXML ImageView imageViewOrign;
 	@FXML ImageView imageResult;
-
-	private Image img1;
-	private Image img3;
 	
 	@FXML Slider slider;
 	
@@ -84,79 +81,9 @@ public class trabfinalController {
 		imageViewOrign.setImage(bancoimg6.getImage());
 		feed1.setText("Clique em prï¿½-processar");
 	}
-	
-	
-	public void histogramaEqua() {
-		Image img = imageViewOrign.getImage();
-		
-		int[] instR = Pdi.histograma(img,1);
-		int[] instG = Pdi.histograma(img,2);
-		int[] instB = Pdi.histograma(img,3);
-		
-		img3 = Pdi.equalHist(instR, instG, instB, img);
-	}
-	
-	public void limiarizacao() {
-		double valor = slider.getValue();
-		valor = valor / 255;
-		img1 = Pdi.escalaDeCinza(img1);
-		img3 = Pdi.limiarizacao(img1, valor);
-	}
-
-	private byte saturate(double val) {
-		int iVal = (int) Math.round(val);
-		iVal = iVal > 255 ? 255 : (iVal < 0 ? 0 : iVal);
-		return (byte) iVal;
-	}
-	
-	@FXML
-	public Image contraste(Image imagem){
-		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		Mat image = OpenCVUtils.imageToMat(imagem);
-		Mat newImage = Mat.zeros(image.size(), image.type());
-		double alpha = 1.0; /*< Simple contrast control */
-		int beta = 41;       /*< Simple brightness control */
-		byte[] imageData = new byte[(int) (image.total()*image.channels())];
-		image.get(0, 0, imageData);
-		byte[] newImageData = new byte[(int) (newImage.total()*newImage.channels())];
-		for (int y = 0; y < image.rows(); y++) {
-			for (int x = 0; x < image.cols(); x++) {
-				for (int c = 0; c < image.channels(); c++) {
-					double pixelValue = imageData[(y * image.cols() + x) * image.channels() + c];
-					pixelValue = pixelValue < 0 ? pixelValue + 256 : pixelValue;
-					newImageData[(y * image.cols() + x) * image.channels() + c]
-							= saturate(alpha * pixelValue + beta);
-				}
-			}
-		}
-		newImage.put(0, 0, newImageData);
-		img3 = OpenCVUtils.matrixToImage(newImage);
-		return img3;
-
-	}
-
-	public void negativa() {
-		img3 = Pdi.negativa(img1);
-	}
-
-	public void escalaDeCinzaMedia() {
-		img3 = Pdi.escalaDeCinza(img1);
-	}
 
 	private void atualizaImage3(Image img) {
 		imageResult.setImage(img);
-	}
-
-//	public void canny(Image img){
-//		Pdi.canny(img);
-//	}
-
-	public void prewitt(){
-		Pdi.prewitt();
-	}
-
-	public void sobel(){
-		Pdi.sobel();
 	}
 
 	@FXML
@@ -169,62 +96,42 @@ public class trabfinalController {
 	@FXML
 	public void tratamento() {
 		Image imagem = imageViewOrign.getImage();
-		Image escalaCinza,negativa,limiarizacao,equalizacaoHistograma, segmentacao;
+		Image escalaCinza,negativa,limiarizacao,equalizacaoHistograma, segmentacao,contraste,canny;
 		
 		int[] instR,instG,instB;
-		//com segmentacao
-//		escalaCinza = Pdi.escalaDeCinza(imagem);
-//		negativa = Pdi.negativa(escalaCinza);
-//
-//		instR = Pdi.histograma(negativa,1);
-//		instG = Pdi.histograma(negativa,2);
-//		instB = Pdi.histograma(negativa,3);
-//		segmentacao = Pdi.segmentacao(instR, instG, instB, 3, negativa);
-//		
-//		limiarizacao = Pdi.limiarizacao(segmentacao, valueLimiar.getValue() / 255);
-//		
-//		instR = Pdi.histograma(limiarizacao,1);
-//		instG = Pdi.histograma(limiarizacao,2);
-//		instB = Pdi.histograma(limiarizacao,3);
-//		equalizacaoHistograma = Pdi.equalHist(instR, instG, instB, limiarizacao);
-//		
-//		feed1.setText("Imagem processada com sucesso");
-//		feed2.setText("Resultado");
-//		
-//		filtro1.setImage(escalaCinza);
-//		filtro2.setImage(negativa);
-//		filtro3.setImage(limiarizacao);
-//		filtro4.setImage(segmentacao);
-//		filtro5.setImage(equalizacaoHistograma);
-//		filtro5.setImage(contraste(imagem));
-		
-		//sem segmentacao
+
 		escalaCinza = Pdi.escalaDeCinza(imagem);
-		negativa = Pdi.negativa(escalaCinza);
+		contraste = Pdi.contraste(escalaCinza);
+		negativa = Pdi.negativa(contraste);
 
 		instR = Pdi.histograma(negativa,1);
 		instG = Pdi.histograma(negativa,2);
 		instB = Pdi.histograma(negativa,3);
-		limiarizacao = Pdi.limiarizacao(imageViewOrign.getImage(), valueLimiar.getValue() / 255);
+		limiarizacao = Pdi.limiarizacao(negativa, valueLimiar.getValue() / 255);
 		
 		instR = Pdi.histograma(limiarizacao,1);
 		instG = Pdi.histograma(limiarizacao,2);
 		instB = Pdi.histograma(limiarizacao,3);
 		equalizacaoHistograma = Pdi.equalHist(instR, instG, instB, limiarizacao);
 		
+		canny = Pdi.canny(equalizacaoHistograma);
+		
 		feed1.setText("Imagem processada com sucesso");
 		feed2.setText("Resultado");
 		
 		filtro1.setImage(escalaCinza);
-		filtro2.setImage(negativa);
-		filtro3.setImage(limiarizacao);
-		filtro4.setImage(equalizacaoHistograma);
-		filtro5.setImage(Pdi.canny(imageViewOrign.getImage()));
-		atualizaImage3(equalizacaoHistograma);
+		filtro2.setImage(contraste);
+		filtro3.setImage(negativa);
+		filtro4.setImage(limiarizacao);
+		filtro5.setImage(equalizacaoHistograma);
+		filtro6.setImage(canny);
+		atualizaImage3(canny);
 		
 		lbFiltro1.setText("Escala de cinza");
-		lbFiltro2.setText("Negativa");
-		lbFiltro3.setText("Limiarizaï¿½ï¿½o");
-		lbFiltro4.setText("Equalizaï¿½ï¿½o");
+		lbFiltro2.setText("Contraste");
+		lbFiltro3.setText("negativa");
+		lbFiltro4.setText("Limiarização");
+		lbFiltro5.setText("Equalização");
+		lbFiltro6.setText("Canny");
 	}
 }
