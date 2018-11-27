@@ -205,7 +205,7 @@ public class trabfinalController {
 		instR = Pdi.histograma(negativa,1);
 		instG = Pdi.histograma(negativa,2);
 		instB = Pdi.histograma(negativa,3);
-		limiarizacao = Pdi.limiarizacao(negativa, valueLimiar.getValue() / 255);
+		limiarizacao = Pdi.limiarizacao(imageViewOrign.getImage(), valueLimiar.getValue() / 255);
 		
 		instR = Pdi.histograma(limiarizacao,1);
 		instG = Pdi.histograma(limiarizacao,2);
@@ -224,7 +224,7 @@ public class trabfinalController {
 		
 		lbFiltro1.setText("Escala de cinza");
 		lbFiltro2.setText("Negativa");
-		lbFiltro3.setText("Limiarização");
-		lbFiltro4.setText("Equalização");
+		lbFiltro3.setText("Limiarizaï¿½ï¿½o");
+		lbFiltro4.setText("Equalizaï¿½ï¿½o");
 	}
 }
