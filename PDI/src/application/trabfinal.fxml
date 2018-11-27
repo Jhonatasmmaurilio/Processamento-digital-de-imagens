@@ -63,7 +63,7 @@
             </VBox>
          </top>
          <left>
-            <VBox prefHeight="480.0" prefWidth="198.0" spacing="20.0" BorderPane.alignment="CENTER">
+            <VBox prefHeight="467.0" prefWidth="328.0" spacing="20.0" BorderPane.alignment="CENTER">
                <children>
                   <Label text="banco de imagens " textFill="WHITE">
                      <font>
@@ -72,7 +72,7 @@
                   </Label>
                   <HBox minHeight="-Infinity" prefHeight="50.0" prefWidth="158.0" spacing="10.0">
                      <children>
-                        <ImageView fx:id="bancoimg1" fitHeight="50.0" fitWidth="50.0" onMouseClicked="#testarImg1" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="bancoimg1" fitHeight="41.0" fitWidth="63.0" onMouseClicked="#testarImg1" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../img/ben3.gif" />
                            </image>
@@ -93,10 +93,6 @@
                            <viewport>
                               <Rectangle2D height="50.0" />
                            </viewport></ImageView>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="50.0" prefWidth="158.0" spacing="10.0">
-                     <children>
                         <ImageView fx:id="bancoimg4" fitHeight="50.0" fitWidth="50.0" onMouseClicked="#testarImg4" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../img/ben17.gif" />
@@ -116,7 +112,7 @@
                   </HBox>
                   <Label text="Ajustar limiar" textFill="WHITE" />
                   <Slider fx:id="valueLimiar" max="255.0" showTickLabels="true" showTickMarks="true" />
-                  <Button mnemonicParsing="false" onAction="#tratamento" prefWidth="200.0" text="Pré-processar" textAlignment="CENTER" />
+                  <Button mnemonicParsing="false" onAction="#tratamento" prefHeight="25.0" prefWidth="302.0" text="Pré-processar" textAlignment="CENTER" />
                </children>
                <opaqueInsets>
                   <Insets />
