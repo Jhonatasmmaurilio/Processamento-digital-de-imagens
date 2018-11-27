@@ -114,10 +114,9 @@
                            </image></ImageView>
                      </children>
                   </HBox>
-                  <Button mnemonicParsing="false" onAction="#tratamento" prefWidth="200.0" text="Pré-processar" textAlignment="CENTER" />
                   <Label text="Ajustar limiar" textFill="WHITE" />
-                  <Slider fx:id="valueLimiar" disable="true" max="255.0" showTickLabels="true" showTickMarks="true" />
-                  <Button fx:id="btlimiar" disable="true" mnemonicParsing="false" onAction="#limiar" prefHeight="25.0" prefWidth="162.0" text="Ajustar" />
+                  <Slider fx:id="valueLimiar" max="255.0" showTickLabels="true" showTickMarks="true" />
+                  <Button mnemonicParsing="false" onAction="#tratamento" prefWidth="200.0" text="Pré-processar" textAlignment="CENTER" />
                </children>
                <opaqueInsets>
                   <Insets />

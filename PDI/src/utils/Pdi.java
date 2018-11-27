@@ -622,5 +622,66 @@ public class Pdi {
 		}
 	}
 
+	public static Image segmentacao(int[] histR, int[] histG, int[] histB, int qtdCorte, Image img) {
+		int w = (int) img.getWidth();
+		int h = (int) img.getHeight();
+
+		PixelReader pr = img.getPixelReader();
+		WritableImage wi = new WritableImage(w, h);
+		PixelWriter pw = wi.getPixelWriter();
+
+		double maiorR = 0.0;
+		double maiorG = 0.0;
+		double maiorB = 0.0;
+
+		int corte = 255 / qtdCorte;
+
+		int auxR = 1;
+		int auxG = 1;
+		int auxB = 1;
+
+		double newCorR = 0.0;
+		double newCorG = 0.0;
+		double newCorB = 0.0;
+
+		for (int i = 0; i < 255; i++) {
+			if (i <= (corte * (auxR))) {
+				if (histR[i] > maiorR) {
+					maiorR = histR[i];
+				}
+			} else {
+				auxR++;
+			}
+
+			if (i <= (corte * (auxG))) {
+				if (histG[i] > maiorG) {
+					maiorG = histG[i];
+				}
+			} else {
+				auxG++;
+			}
+
+			if (i <= (corte * (auxB))) {
+				if (histB[i] > maiorB) {
+					maiorB = histB[i];
+				}
+			} else {
+				auxB++;
+			}
+		}
+
+		newCorR = maiorR / 255.0;
+		newCorG = maiorG / 255.0;
+		newCorB = maiorB / 255.0;
+
+		for (int i = 1; i < w; i++) {
+			for (int j = 1; j < h; j++) {
+				pw.setColor(i, j, new Color(newCorR, newCorG, newCorB, 1));
+			}
+		}
+
+		return wi;
+	}
+	
 }
 
