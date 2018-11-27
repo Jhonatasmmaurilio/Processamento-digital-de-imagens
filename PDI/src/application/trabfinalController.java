@@ -172,16 +172,40 @@ public class trabfinalController {
 		Image escalaCinza,negativa,limiarizacao,equalizacaoHistograma, segmentacao;
 		
 		int[] instR,instG,instB;
+		//com segmentacao
+//		escalaCinza = Pdi.escalaDeCinza(imagem);
+//		negativa = Pdi.negativa(escalaCinza);
+//
+//		instR = Pdi.histograma(negativa,1);
+//		instG = Pdi.histograma(negativa,2);
+//		instB = Pdi.histograma(negativa,3);
+//		segmentacao = Pdi.segmentacao(instR, instG, instB, 3, negativa);
+//		
+//		limiarizacao = Pdi.limiarizacao(segmentacao, valueLimiar.getValue() / 255);
+//		
+//		instR = Pdi.histograma(limiarizacao,1);
+//		instG = Pdi.histograma(limiarizacao,2);
+//		instB = Pdi.histograma(limiarizacao,3);
+//		equalizacaoHistograma = Pdi.equalHist(instR, instG, instB, limiarizacao);
+//		
+//		feed1.setText("Imagem processada com sucesso");
+//		feed2.setText("Resultado");
+//		
+//		filtro1.setImage(escalaCinza);
+//		filtro2.setImage(negativa);
+//		filtro3.setImage(limiarizacao);
+//		filtro4.setImage(segmentacao);
+//		filtro5.setImage(equalizacaoHistograma);
+//		filtro5.setImage(contraste(imagem));
 		
+		//sem segmentacao
 		escalaCinza = Pdi.escalaDeCinza(imagem);
 		negativa = Pdi.negativa(escalaCinza);
 
 		instR = Pdi.histograma(negativa,1);
 		instG = Pdi.histograma(negativa,2);
 		instB = Pdi.histograma(negativa,3);
-		segmentacao = Pdi.segmentacao(instR, instG, instB, 3, negativa);
-		
-		limiarizacao = Pdi.limiarizacao(segmentacao, valueLimiar.getValue() / 255);
+		limiarizacao = Pdi.limiarizacao(negativa, valueLimiar.getValue() / 255);
 		
 		instR = Pdi.histograma(limiarizacao,1);
 		instG = Pdi.histograma(limiarizacao,2);
@@ -194,9 +218,7 @@ public class trabfinalController {
 		filtro1.setImage(escalaCinza);
 		filtro2.setImage(negativa);
 		filtro3.setImage(limiarizacao);
-		filtro4.setImage(segmentacao);
-		filtro5.setImage(equalizacaoHistograma);
-		filtro5.setImage(contraste(imagem));
+		filtro4.setImage(equalizacaoHistograma);
 		
 		atualizaImage3(equalizacaoHistograma);
 		
